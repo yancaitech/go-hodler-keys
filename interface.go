@@ -143,3 +143,8 @@ type IRipple interface {
 	RippleDecodeRawTxOut(rawtx string) (txset RippleTx, err error)
 	RippleTxid(rawtx string) (txid string, err error)
 }
+
+// IZCash interface
+type IZCash interface {
+	ZCashAddress(mainnet bool, pubkeycomp bool) (addr string, err error)
+}
