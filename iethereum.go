@@ -280,7 +280,8 @@ func (k *Key) EthereumSignRawTxERC20(entropy string, seed string, m1 uint32, m2 
 	data = append(data, paddedAddress...)
 	data = append(data, paddedAmount...)
 
-	tx := types.NewTransaction(nonce, tokenAddress, value, gasLimit, gasPrice, data)
+	var zeroV big.Int
+	tx := types.NewTransaction(nonce, tokenAddress, &zeroV, gasLimit, gasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {
 		log.Fatal(err)
