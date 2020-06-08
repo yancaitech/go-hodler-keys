@@ -272,7 +272,7 @@ func (k *Key) EthereumSignRawTxERC20(entropy string, seed string, m1 uint32, m2 
 	hash.Write(transferFnSignature)
 	methodID := hash.Sum(nil)[:4]
 
-	paddedAddress := common.LeftPadBytes(contrAddress.Bytes(), 32)
+	paddedAddress := common.LeftPadBytes(tokenAddress.Bytes(), 32)
 	paddedAmount := common.LeftPadBytes(value.Bytes(), 32)
 
 	var data []byte
@@ -281,7 +281,7 @@ func (k *Key) EthereumSignRawTxERC20(entropy string, seed string, m1 uint32, m2 
 	data = append(data, paddedAmount...)
 
 	var zeroV big.Int
-	tx := types.NewTransaction(nonce, tokenAddress, &zeroV, gasLimit, gasPrice, data)
+	tx := types.NewTransaction(nonce, contrAddress, &zeroV, gasLimit, gasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {
 		log.Fatal(err)
