@@ -143,3 +143,16 @@ type IRipple interface {
 	RippleDecodeRawTxOut(rawtx string) (txset RippleTx, err error)
 	RippleTxid(rawtx string) (txid string, err error)
 }
+
+// IFilecoin interface
+type IFilecoin interface {
+	FilecoinAddress() (addr string, err error)
+	FilecoinAddressValidate(addr string) (err error)
+	FilecoinKeyInfo() (info string, err error)
+	FilecoinLoadKeyInfo(info string) (err error)
+
+	FilecoinSignRawTx(entropy string, seed string, m1 uint32, m2 uint32,
+		nonce uint64, fromAccount string, toAccount string,
+		val uint64, gp uint64, gl uint64,
+		method uint64, params []byte) (signedtx string, hextx string, txid string, err error)
+}
