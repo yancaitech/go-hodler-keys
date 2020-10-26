@@ -156,3 +156,12 @@ type IFilecoin interface {
 		val uint64, gp uint64, gl uint64,
 		method uint64, params []byte) (signedtx string, hextx string, txid string, err error)
 }
+
+// IPolkadot interface
+type IPolkadot interface {
+	PolkadotAddress() (addr string, err error)
+	PolkadotAddressValidate(addr string) (err error)
+
+	PolkadotCreateSignedTransaction(toAddr string, amount, nonce, fee uint64) (txid, txSigned string, err error)
+	PolkadotDecodeSignedTransaction(txSigned string) (txid, txjson string, err error)
+}

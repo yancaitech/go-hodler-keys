@@ -71,7 +71,7 @@ func (k *Key) DumpLitecoinWIF(ismainnet bool, pubkeycomp bool) (wifkey string, e
 	if ismainnet {
 		params = &chaincfg.MainNetParams
 	} else {
-		params = &chaincfg.TestNet4Params
+		params = &chaincfg.SimNetParams
 	}
 	wif, err := ltcutil.NewWIF(prik, params, pubkeycomp)
 	if err != nil {
@@ -86,7 +86,7 @@ func (k *Key) LitecoinAddress(mainnet bool, pubkeycomp bool) (addr string, err e
 	if mainnet {
 		params = &chaincfg.MainNetParams
 	} else {
-		params = &chaincfg.TestNet4Params
+		params = &chaincfg.SimNetParams
 	}
 
 	wif, err := k.DumpBitcoinWIF(mainnet, pubkeycomp)
