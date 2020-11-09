@@ -19,9 +19,9 @@ import (
 	"github.com/btcsuite/btcd/wire"
 	"github.com/btcsuite/btcutil"
 	"github.com/btcsuite/btcutil/base58"
-	ut "github.com/yancaitech/go-utils"
 	"github.com/tyler-smith/go-bip32"
 	"github.com/tyler-smith/go-bip39"
+	ut "github.com/yancaitech/go-utils"
 )
 
 // bitcoin const
@@ -66,6 +66,14 @@ type BitcoinTx struct {
 
 // LoadFromEntropy func
 func (k *Key) LoadFromEntropy(entropy string, seed string, m1 uint32, m2 uint32, pubkeycomp bool) (err error) {
+	if seed == "hexraw" && len(entropy) == 64 {
+		bs, err := hex.DecodeString(entropy)
+		if err != nil {
+			return err
+		}
+		err = k.LoadBitcoinHex(bs, pubkeycomp)
+		return err
+	}
 	mnem, err := k.EntropyToMnemonic(entropy)
 	if err != nil {
 		return err
