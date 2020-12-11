@@ -66,14 +66,6 @@ type BitcoinTx struct {
 
 // LoadFromEntropy func
 func (k *Key) LoadFromEntropy(entropy string, seed string, m1 uint32, m2 uint32, pubkeycomp bool) (err error) {
-	if seed == "hexraw" && len(entropy) == 64 {
-		bs, err := hex.DecodeString(entropy)
-		if err != nil {
-			return err
-		}
-		err = k.LoadBitcoinHex(bs, pubkeycomp)
-		return err
-	}
 	mnem, err := k.EntropyToMnemonic(entropy)
 	if err != nil {
 		return err
@@ -464,24 +456,13 @@ func (k *Key) BitcoinSignRawTx(wifkey string, rawtx string) (signedtx string, er
 // BitcoinWifFromEntropy func
 func (k *Key) BitcoinWifFromEntropy(entropy string, seed string, m1 uint32, m2 uint32, mainnet bool, pubkeycomp bool) (wif string, err error) {
 	var nk Key
-	if seed == "hexraw" {
-		bs, err := hex.DecodeString(entropy)
-		if err != nil {
-			return "", err
-		}
-		err = nk.LoadBitcoinHex(bs, pubkeycomp)
-		if err != nil {
-			return "", err
-		}
-	} else {
-		mnem, err := nk.EntropyToMnemonic(entropy)
-		if err != nil {
-			return "", err
-		}
-		err = nk.LoadFromMnemonic(mnem, seed, m1, m2, pubkeycomp)
-		if err != nil {
-			return "", err
-		}
+	mnem, err := nk.EntropyToMnemonic(entropy)
+	if err != nil {
+		return "", err
+	}
+	err = nk.LoadFromMnemonic(mnem, seed, m1, m2, pubkeycomp)
+	if err != nil {
+		return "", err
 	}
 	wif, err = nk.DumpBitcoinWIF(mainnet, pubkeycomp)
 	if err != nil {
